@@ -22,7 +22,7 @@ Below are instructions to install *py-pdf-compress* and its dependencies
 * Ghostscript
 
 
-## To install the Ghostscript:
+## Installing Ghostscript:
 **MacOS**
 
 ```bash
@@ -43,9 +43,25 @@ choco install ghostscript
 
 
 ## Installing py-pdf-compress
-This tool is installed using **pipx**
+This tool can either be installed diretcly from [pypi](### Installing using pip) using *pip* or *pip3*, or it can be installed from [GitHub](### Installing from GitHub) using **pipx**
 
-### Install pipx
+### Installing using pip
+---
+To install using pip run the command
+
+```bash
+pip install py-pdf-compress
+```
+
+<br>
+
+### Installing from GitHub
+
+This requires **pipx**
+
+#### Installing pipx
+---
+
 **MacOS / Linux**
 
 ```bash
@@ -60,7 +76,7 @@ python -m pip install --user pipx
 python -m pipx ensurepath
 ```
 
-### Installing from GitHub
+### 
 Once **pipx** is installed, running:
 
 ```bash
