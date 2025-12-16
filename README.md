@@ -1,7 +1,6 @@
 # py-pdf-compress
 ![Made with Python](https://img.shields.io/badge/Python-a?logo=python&label=Made%20With&color=blue&style=for-the-badge)
 ![PyPi Version](https://img.shields.io/pypi/v/py-pdf-compress?style=for-the-badge)
-<br>
 ![GitHub License](https://img.shields.io/github/license/Harry-Skerritt/PDF-CLI-Compressor?style=for-the-badge)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Harry-Skerritt/PDF-CLI-Compressor?style=for-the-badge)
 <br>
