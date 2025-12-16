@@ -3,13 +3,15 @@ import subprocess
 import argparse
 import shutil
 
+def getGhostscriptCmd():
+    return shutil.which("gs") or shutil.which("gswin64c")
 
 def getCurrentDir():
     return os.getcwd()
 
 
 def getPDFsInDir(path):
-    return [f for f in os.listdir(path) if f.lower().endswith(".pdf")]
+    return [f for f in os.listdir(path) if f.lower().endswith(".pdf") and f != "out"]
 
 
 def createOutDir(path):
@@ -39,6 +41,16 @@ def getQuality(in_quality):
 
 
 def compress_pdfs(arg_in_qual):
+    gs_cmd = getGhostscriptCmd()
+    if not gs_cmd:
+        raise RuntimeError(
+            "Ghostscript not found.\n"
+            "Install it:\n"
+            "  macOS:   brew install ghostscript\n"
+            "  Linux:   sudo apt install ghostscript\n"
+            "  Windows: choco install ghostscript"
+        )
+        
     working_dir = getCurrentDir()
     out_dir = createOutDir(working_dir)
     clearOutDir(out_dir)
@@ -56,7 +68,7 @@ def compress_pdfs(arg_in_qual):
 
         subprocess.run(
             [
-                "gs",
+                gs_cmd,
                 "-sDEVICE=pdfwrite",
                 f"-dPDFSETTINGS={quality}",
                 "-dNOPAUSE",
