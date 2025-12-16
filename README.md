@@ -14,6 +14,8 @@ Uses Ghostscript to compress all PDFs within a directory!
 
 *Originally written as a quick tool for personal use, but added to, for ease of use*
 
+[PyPi Link](https://pypi.org/project/py-pdf-compress/)
+
 <br>
 
 # Installing the Tool
