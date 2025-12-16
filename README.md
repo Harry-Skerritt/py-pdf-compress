@@ -1,7 +1,10 @@
 # PDF-CLI-Compressor
-![GitHub License](https://img.shields.io/github/license/Harry-Skerritt/PDF-CLI-Compressor)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Harry-Skerritt/PDF-CLI-Compressor)
-![Runs on Mac](https://img.shields.io/badge/Mac-OS?logo=apple&color=%23555555)
+![Made with Python](https://img.shields.io/badge/Python-a?logo=python&label=Made%20With&color=blue&style=for-the-badge)
+![GitHub License](https://img.shields.io/github/license/Harry-Skerritt/PDF-CLI-Compressor?style=for-the-badge)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Harry-Skerritt/PDF-CLI-Compressor?style=for-the-badge)
+![Runs on Mac](https://img.shields.io/badge/Mac-OS?logo=apple&color=%23555555&style=for-the-badge)
+![Runs on Linux](https://img.shields.io/badge/Linux-OS?logo=linux&color=orange&style=for-the-badge)
+![Runs on Windows](https://img.shields.io/badge/Windows-OS?logo=windows&color=blue&style=for-the-badge)
 
 ---
 
