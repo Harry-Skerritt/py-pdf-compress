@@ -43,7 +43,7 @@ choco install ghostscript
 
 
 ## Installing py-pdf-compress
-This tool can either be installed diretcly from [pypi](###Installing-using-pip) using *pip* or *pip3*, or it can be installed from [GitHub](###Installing-from-GitHub) using **pipx**
+This tool can either be installed diretcly from [pypi](#Installing-using-pip) using *pip* or *pip3*, or it can be installed from [GitHub](#Installing-from-GitHub) using **pipx**
 
 ### Installing using pip
 ---
