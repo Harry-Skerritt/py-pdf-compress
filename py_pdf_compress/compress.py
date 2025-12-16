@@ -1,10 +1,27 @@
 import os
+import sys
 import subprocess
 import argparse
 import shutil
 import tempfile
-import sys
+import threading
+import time
+import itertools
 
+
+# Clears previous line
+def clear_line():
+    sys.stdout.write("\r\033[K")
+    sys.stdout.flush()
+
+# This handles the spinner and message UI
+def spinner(message: str, stop_event: threading.Event):
+    for char in itertools.cycle("-/|\\"):
+        if stop_event.is_set():
+            break
+        sys.stdout.write(f"\r{char} {message}")
+        sys.stdout.flush()
+        time.sleep(0.1)
 
 # This will get the current directory of the users terminal, 
 # and check that it is not root, and can be written to
@@ -80,17 +97,22 @@ def getQuality(in_quality):
 
 
 # This is the actual compress function
-def compress_pdfs(arg_in_qual):
+def compress_pdfs(arg_in_qual, quiet=False):
     # Get working dir and perform ghostsciprt check
     working_dir = getCurrentDir()
     gs_cmd = getGhostscriptCmd()
     
     # Get the files from the cwd
-    pdf_names = getPDFsInDir(working_dir)
+    pdf_names = sorted(getPDFsInDir(working_dir))
     
     # If no files presents - exit
     if not pdf_names:
         sys.exit(f"Error: No PDF files found in {working_dir}")
+
+    # Get toral files and output
+    total = len(pdf_names)
+    if not quiet:
+        print(f"Found {total} PDF file(s).")
 
     # Create output dir
     out_dir = createOutDir(working_dir)
@@ -100,23 +122,53 @@ def compress_pdfs(arg_in_qual):
     quality = getQuality(arg_in_qual)
 
     # Compress each file
-    for pdf in pdf_names:
-        in_path = os.path.join(working_dir, pdf)
+    for idx, pdf in enumerate(pdf_names, start=1):
+        in_path = os.path.join(working_dir, pdf) # Set input path
 
-        if not os.path.isfile(in_path):
+        if not os.path.isfile(in_path):          # Check path has a file
             continue
 
-        out_path = os.path.join(out_dir, pdf)
+        out_path = os.path.join(out_dir, pdf)    # Set output path
 
-        subprocess.run(
-            [
-                gs_cmd,
-                "-sDEVICE=pdfwrite",
-                f"-dPDFSETTINGS={quality}",
-                "-dNOPAUSE",
-                "-dBATCH",
-                f"-sOutputFile={out_path}",
-                in_path,
-            ],
-            check=True,
-        )
+        # Setup the compressing message
+        if not quiet and sys.stdout.isatty():
+            msg = f"Compressing {idx}/{total}: {pdf}"
+            stop_event = threading.Event()
+            spin_thread = threading.Thread(
+                target=spinner, args=(msg, stop_event)
+            )
+            spin_thread.start()
+        else:
+            stop_event = None
+
+        # Run the ghostscript subprocess
+        try:
+            subprocess.run(
+                [
+                    gs_cmd,
+                    "-q",
+                    "-sDEVICE=pdfwrite",
+                    f"-dPDFSETTINGS={quality}",
+                    "-dNOPAUSE",
+                    "-dBATCH",
+                    f"-sOutputFile={out_path}",
+                    in_path,
+                ],
+                check=True,
+            )
+            
+        except subprocess.CalledProcessError:
+            if stop_event:
+                stop_event.set()
+                spin_thread.join()
+            sys.exit(f"\nError: Failed to compress {pdf}")
+
+        if stop_event:
+            stop_event.set()
+            spin_thread.join()
+
+        if not quiet:
+            clear_line()
+            print(f"Compressed {idx}/{total}: {pdf}")
+
+    print(f"\nDone! Files saved to {out_dir}")

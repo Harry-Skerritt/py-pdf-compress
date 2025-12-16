@@ -27,6 +27,13 @@ def main():
         action="version",
         version=f"%(prog)s {get_version()}",
     )
+
+    parser.add_argument(
+        "-q",
+        "--quiet",
+        action="store_true",
+        help="Only print final result",
+    )
     
     args = parser.parse_args()
-    compress_pdfs(args.quality)
+    compress_pdfs(args.quality, quiet=args.quiet)
